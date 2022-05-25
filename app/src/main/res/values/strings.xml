@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">a21ponkr Final project</string>
-    <color name="YELLOW">#FFC300</color>
-    <color name="PURPLE">#702963</color>
+   <!-- <color name="YELLOW">#FFC300</color> -->
+    <!-- <color name="PURPLE">#702963</color> -->
 </resources>

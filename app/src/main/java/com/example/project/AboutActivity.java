@@ -17,7 +17,7 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
         Log.d("==>","about page has been created");
 
-        returnToMain = findViewById(R.id.returnToMain);
+        returnToMain = findViewById(R.id.returntomain);
         returnToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

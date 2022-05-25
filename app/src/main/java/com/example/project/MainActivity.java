@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
         setSupportActionBar(toolbar);
 
         new JsonTask(this).execute(JSON_URL);
-        recyclerView = findViewById(R.id.recyclerview);
+
+        recyclerView =findViewById(R.id.recyclerview);
         recyclerView.setAdapter(new AnimeAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -41,12 +42,13 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("==>", "clicked about btn");
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                Log.d("==>", "about button clicked");
+                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intent);
             }
         });
     }
+
 
     @Override
     public void onPostExecute(String json) {
@@ -54,9 +56,8 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
         Gson gson = new Gson();
         Type type = new TypeToken<List<Anime>>() {}.getType();
         List<Anime> listOfAnime = gson.fromJson(json, type);
-        Log.d("==>", "Amount of anime: "+listOfAnime.size());
+        Log.d("==>","Anime amount: "+listOfAnime.size());
         Log.d("==>","Element 0 "+listOfAnime.get(0).toString());
 
     }
-
 }
