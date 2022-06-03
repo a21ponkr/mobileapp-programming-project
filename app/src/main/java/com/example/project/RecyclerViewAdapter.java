@@ -27,7 +27,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull final RecyclerViewAdapter.AnimeViewHolder holder, int position) {
         String name = as.get(position).getName();
-        Integer company = as.get(position).getCompany();
+        String company = as.get(position).getCompany();
         holder.name.setText(name);
         holder.company.setText(company.toString());
     }
