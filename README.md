@@ -1,15 +1,93 @@
+Det här projektet bygger på att sätta våra kunskaper på krav. Mitt projekt består av att visa animeserier 
+jag gillar och jag har främst använt mig av deras namn och företag (studio) därmed har jag klassen Anime.java.
 
-# Rapport
+JSON-datan skrevs in på en hemsida och hämtades också därifrån, de använde flera olika taggar så som:
+ID, Login, Size, Location, Name, company, category och Auxdata, de fanns redan där och kunde inte namnges annorlunda på sidan. 
 
-(Detta kommer ändras senare)
+Min Anime.java består av:
+Med strängar för id, namn och företag. "this" är ett nyckelord som hänvisar till det aktuella objektet.
+Sen returnerar de strängarna
 
-Krav:
+```
+public class Anime {
+    private String id;
+    private String name;
+    private String company;
 
-* Appen skall ha en huvudskärm med en lista (RecyclerView) med er JSON-data
-* Appen skall hämta och presentera JSON-data från kursens webbtjänst: https://mobprog.webug.se/json-api?login=brom (byt ut brom mot ditt eget login) (Ni skapar och lägger in er apps JSON-data hos kursens webbtjänsten via admin-gränssnittet OBS! den data ni använder får inte innehålla copyright-information.)
-* Appens JSON-data är en JSON-array med JSON-objekt. Dessa JSON-objekt måste som minst innehålla attributen ID,Login och 3 ytterligare attribut (totalt minst 5 attribut).
-* JSON-arrayen måste som minst innehålla 5 JSON-objekt. Det vill säga minst 5 stycken olika rader med exempel-data måste finnas lagrad i er webbtjänst. T ex, i FamousPeakJSON-tjänsten så är varje berg en rad.
-* JSON data hämtas med hjälp av klassen JsonTask som ni kopierar från https://raw.githubusercontent.com/LenaSYS/mobileapp-programming-networking/master/app/src/main/java/com/example/networking/JsonTask.java
-* Er JSON-data skall presenteras med hjälp av en RecyclerView som får sin data via en adapter - så som ni gjort i tidigare inlämningsuppgifter
-* Appen skall ha en separat "about"-skärm som beskriver appens målgrupp. About-skärm skall vara en egen aktivitet. (Till exempel kan "about"-skärm presenteras i en webview med internal web page.)
-* Inkludera även lite skärmdumpar/video från appen, i fall det strular med demo vid presentationen. Denna presentation ger ni vid slutseminariumet.
+    public Anime(String id, String name, String company) {
+        this.id = id;
+        this.name = name;
+        this.company = company;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getCompany(){
+        return company;
+    }
+
+}
+```
+
+och MainActivity används för att hämta JSON_länken, skapa en array och ansluta till recyclerviewen. Här finns det också så att man kan komma till den andra aktiviteten.
+
+Kod:
+
+```
+public class MainActivity extends AppCompatActivity implements JsonTask.JsonTaskListener {
+
+    private final String JSON_URL = "https://mobprog.webug.se/json-api?login=a21ponkr";
+    private final String JSON_FILE = "mountains.json";
+    private ArrayList<Anime> as;
+    private RecyclerView recyclerView;
+    private Button button;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        new JsonTask(this).execute(JSON_URL);
+        new JsonFile(this, this).execute(JSON_FILE);
+
+        button = (Button) findViewById(R.id.button);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openActivity_about();
+            }
+        });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onPostExecute(String json) {
+        Log.d("MainActivity", json);
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Anime>>(){}.getType();
+        as = gson.fromJson(json, type);
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(as);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(recyclerViewAdapter);
+    }
+
+    public void openActivity_about(){
+        Intent intent = new Intent(this, Activity_about.class);
+        startActivity(intent);
+    }
+
+}
+```
+
+Den här bilden visar mainpage
+![](mainapp.png)
+Den här bilden visar aboutpage
+![](aboutapp.png)
